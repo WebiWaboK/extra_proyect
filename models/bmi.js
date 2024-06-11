@@ -1,19 +1,24 @@
 const axios = require('axios');
 
-exports.create = async (entry) => {
-  try {
-    const response = await axios.post('http://localhost:4000/api/bmi_entries', entry);
-    return response.data;
-  } catch (error) {
-    throw error;
+class BMI {
+  constructor(weight, height) {
+    this.weight = weight;
+    this.height = height;
   }
-};
 
-exports.findAllByUserId = async (user_id) => {
-  try {
-    const response = await axios.get(`http://localhost:4000/api/bmi_entries/user/${user_id}`);
-    return response.data;
-  } catch (error) {
-    throw error;
+  async calculate() {
+    try {
+      const response = await axios.post('http://localhost:4000/api/calculate', {
+        weight: this.weight,
+        height: this.height,
+      });
+      console.log('Response from API:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error from API:', error.message);
+      throw new Error('Error calculating BMI');
+    }
   }
-};
+}
+
+module.exports = BMI;

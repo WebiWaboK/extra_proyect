@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1 Resultado del IMC
+  p Tu IMC es #{bmi}
+  p Estás en la categoría: #{category}
+  p #{recommendations}
+  a(href='/') 
+    button Regresar

@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
-// Controladores
 const bmiController = require('../controllers/bmiController');
+//const authController = require('../controllers/authController');
 
-// Rutas
 router.get('/', bmiController.index);
+router.post('/calculate', bmiController.calculate);
 
 module.exports = router;

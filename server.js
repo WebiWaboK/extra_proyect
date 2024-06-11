@@ -31,6 +31,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 const routes = require('./routes/routes');
 app.use('/', routes);
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
