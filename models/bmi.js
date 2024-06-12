@@ -12,10 +12,8 @@ class BMI {
         weight: this.weight,
         height: this.height,
       });
-      console.log('Response from API:', response.data);
       return response.data;
     } catch (error) {
-      console.error('Error from API:', error.message);
       throw new Error('Error calculating BMI');
     }
   }
