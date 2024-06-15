@@ -11,3 +11,72 @@ block content
     br
     button(type='submit') Calcular IMC
   #result
+  canvas#bmiChart(width='600' height='200') // Ajusta el tamaño del canvas aquí
+
+  script(src='https://cdn.jsdelivr.net/npm/chart.js')
+  script.
+    document.querySelector('form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const weight = document.querySelector('input[name="weight"]').value;
+      const height = document.querySelector('input[name="height"]').value;
+      const response = await fetch('/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ weight, height })
+      });
+      const result = await response.json();
+      console.log('Calculate Result:', result); // Log de los resultados del cálculo
+      document.querySelector('#result').innerHTML = `
+        <p>Tu IMC es ${result.bmi}</p>
+        <p>Estás en la categoría: ${result.category}</p>
+        <p>Recomendaciones: ${result.recommendations}</p>
+      `;
+      const ctx = document.getElementById('bmiChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Bajo peso', 'Peso normal', 'Sobrepeso', 'Obesidad'],
+          datasets: [
+            {
+              label: 'Rango de IMC',
+              data: [18.5, 25, 30, 35],
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              borderColor: 'rgba(0, 0, 0, 1)',
+              borderWidth: 1,
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: 'Tu IMC',
+              data: [null, null, null, result.bmi],
+              backgroundColor: 'rgba(255, 99, 132, 1)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1,
+              pointRadius: 10,
+              pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            x: {
+              beginAtZero: true,
+              min: 0,
+              max: 40,
+              title: {
+                display: true,
+                text: 'IMC'
+              }
+            },
+            y: {
+              display: false
+            }
+          }
+        }
+      });
+    });

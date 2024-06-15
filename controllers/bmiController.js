@@ -1,4 +1,4 @@
-const BMI = require('../models/bmi');
+const axios = require('axios');
 
 exports.index = (req, res) => {
   res.render('index', { user: req.user });
@@ -6,11 +6,14 @@ exports.index = (req, res) => {
 
 exports.calculate = async (req, res) => {
   const { weight, height } = req.body;
+  console.log('Calculate Request:', req.body); // Log de la solicitud de cálculo
   try {
-    const bmi = new BMI(weight, height);
-    const result = await bmi.calculate();
+    const response = await axios.post('http://localhost:4000/api/bmi/calculate', { weight, height });
+    const result = response.data;
+    console.log('Calculate Response:', result); // Log de la respuesta de cálculo
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message || 'Error calculating BMI' });
+    console.error('Calculate Error:', error.response ? error.response.data : error.message); // Log del error
+    res.status(500).json({ error: error.response.data.error });
   }
 };
