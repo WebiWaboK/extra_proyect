@@ -1,9 +1,8 @@
-const User = require('../models/user');
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
-const secret = process.env.JWT_SECRET || 'claveSecretaJWT';
 
 exports.loginForm = (req, res) => {
-  res.render('login', { user: req.user });
+  res.render('login', { user: req.user, error: null });
 };
 
 exports.registerForm = (req, res) => {
@@ -12,45 +11,50 @@ exports.registerForm = (req, res) => {
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
+  console.log('Login Request:', req.body); // Log de la solicitud de inicio de sesión
   try {
-    const user = new User(username, null, password);
-    const response = await user.login();
-    const token = response.token;
+    const response = await axios.post('http://localhost:4000/api/auth/login', { username, password });
+    const token = response.data.token;
     res.cookie('jwt', token, { httpOnly: true });
+    console.log('Login Successful, Token:', token); // Log del token recibido
     res.redirect('/');
   } catch (error) {
-    console.error('Error logging in user:', error);
-    res.status(500).json({ error: 'Error logging in user' });
+    console.error('Login Error:', error.response ? error.response.data : error.message); // Log del error
+    res.render('login', { user: null, error: error.response.data.error });
   }
 };
 
 exports.register = async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
-  console.log('Register request body:', req.body);
+  console.log('Register Request:', req.body); // Log de la solicitud de registro
   try {
-    const user = new User(username, email, password, confirmPassword);
-    const response = await user.register();
-    console.log('Registration response:', response);
-    res.redirect('/');
+    await axios.post('http://localhost:4000/api/auth/register', { username, email, password, confirmPassword });
+    console.log('Register Successful'); // Log del registro exitoso
+    res.redirect('/login');
   } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).json({ error: 'Error registering user' });
+    console.error('Register Error:', error.response ? error.response.data : error.message); // Log del error
+    res.render('register', { user: null, error: error.response.data.error });
   }
 };
 
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
+  await axios.get('http://localhost:4000/api/auth/logout');
+  console.log('Logout Successful'); // Log de cierre de sesión exitoso
   res.clearCookie('jwt');
   res.redirect('/');
 };
 
 exports.protect = (req, res, next) => {
   const token = req.cookies.jwt;
+  console.log('JWT Token:', token); // Log del token JWT
   if (token) {
     try {
-      const decoded = jwt.verify(token, secret);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
       req.user = decoded;
-      res.locals.user = req.user; // Make user available in all templates
+      res.locals.user = req.user;
+      console.log('Session User:', req.user); // Log del usuario en sesión
     } catch (error) {
+      console.error('JWT Verification Error:', error); // Log del error de verificación JWT
       res.clearCookie('jwt');
     }
   }

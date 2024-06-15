@@ -1,8 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const session = require('./middlewares/session');
 const flash = require('express-flash');
 
 // Cargar variables de entorno
@@ -15,11 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true
-}));
+app.use(session);
 app.use(flash());
 
 // Set views
