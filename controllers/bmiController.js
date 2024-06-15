@@ -14,6 +14,6 @@ exports.calculate = async (req, res) => {
     res.json(result);
   } catch (error) {
     console.error('Calculate Error:', error.response ? error.response.data : error.message); // Log del error
-    res.status(500).json({ error: error.response.data.error });
+    res.status(500).json({ error: error.response ? error.response.data.error : error.message });
   }
 };

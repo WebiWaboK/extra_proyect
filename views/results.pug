@@ -1,9 +1,56 @@
 extends layout
 
 block content
-  h1 Resultado del IMC
-  p Tu IMC es #{bmi}
-  p Estás en la categoría: #{category}
-  p #{recommendations}
-  a(href='/') 
-    button Regresar
+  h1 Resultados de IMC
+  p Tu IMC es #{result.bmi}
+  p Estás en la categoría: #{result.category}
+  p Recomendaciones: #{result.recommendations}
+  canvas#bmiChart(width='600' height='200') // Ajusta el tamaño del canvas aquí
+
+  script(src='https://cdn.jsdelivr.net/npm/chart.js')
+  script.
+    const ctx = document.getElementById('bmiChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Bajo peso', 'Peso normal', 'Sobrepeso', 'Obesidad'],
+        datasets: [
+          {
+            label: 'Rango de IMC',
+            data: [18.5, 25, 30, 35],
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderColor: 'rgba(0, 0, 0, 1)',
+            borderWidth: 1,
+            pointRadius: 0,
+            fill: false
+          },
+          {
+            label: 'Tu IMC',
+            data: [null, null, null, !{result.bmi}],
+            backgroundColor: 'rgba(255, 99, 132, 1)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            pointRadius: 10,
+            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+          x: {
+            beginAtZero: true,
+            min: 18.5,
+            max: 30,
+            title: {
+              display: true,
+              text: 'IMC'
+            }
+          },
+          y: {
+            display: false
+          }
+        }
+      });

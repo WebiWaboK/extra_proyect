@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1 Calculadora de IMC
-  form(action='/calculate' method='post')
+  form(id='bmiForm')
     label(for='weight') Peso (kg):
     input(type='number' name='weight' required)
     br
@@ -15,7 +15,7 @@ block content
 
   script(src='https://cdn.jsdelivr.net/npm/chart.js')
   script.
-    document.querySelector('form').addEventListener('submit', async function(event) {
+    document.querySelector('#bmiForm').addEventListener('submit', async function(event) {
       event.preventDefault();
       const weight = document.querySelector('input[name="weight"]').value;
       const height = document.querySelector('input[name="height"]').value;
@@ -33,24 +33,30 @@ block content
         <p>Estás en la categoría: ${result.category}</p>
         <p>Recomendaciones: ${result.recommendations}</p>
       `;
+
       const ctx = document.getElementById('bmiChart').getContext('2d');
       new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: {
           labels: ['Bajo peso', 'Peso normal', 'Sobrepeso', 'Obesidad'],
           datasets: [
             {
               label: 'Rango de IMC',
-              data: [18.5, 25, 30, 35],
+              data: [
+                { x: 18.5, y: 0 },
+                { x: 25, y: 0 },
+                { x: 30, y: 0 }
+              ],
               backgroundColor: 'rgba(0, 0, 0, 0)',
               borderColor: 'rgba(0, 0, 0, 1)',
               borderWidth: 1,
               pointRadius: 0,
-              fill: false
+              fill: false,
+              showLine: true
             },
             {
               label: 'Tu IMC',
-              data: [null, null, null, result.bmi],
+              data: [{ x: result.bmi, y: 0 }],
               backgroundColor: 'rgba(255, 99, 132, 1)',
               borderColor: 'rgba(255, 99, 132, 1)',
               borderWidth: 1,
@@ -65,9 +71,10 @@ block content
           maintainAspectRatio: true,
           scales: {
             x: {
-              beginAtZero: true,
-              min: 0,
-              max: 40,
+              type: 'linear',
+              position: 'bottom',
+              min: 18.5,
+              max: 30,
               title: {
                 display: true,
                 text: 'IMC'
