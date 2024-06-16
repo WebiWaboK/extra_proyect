@@ -1,3 +1,8 @@
+import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation';
+
+Chart.register(annotationPlugin);
+
 document.addEventListener('DOMContentLoaded', () => {
     const bmiForm = document.querySelector('form[action="/calculate"]');
   
