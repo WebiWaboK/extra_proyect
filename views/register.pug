@@ -3,7 +3,7 @@ extends layout
 block content
   h1 Registro
   if error
-    p.error-message #{error}
+    .error-message #{error}
 
   form(action='/register' method='post')
     label(for='username') Nombre de usuario:
@@ -19,3 +19,4 @@ block content
     input(type='password' name='confirmPassword' required)
     br
     button(type='submit') Registrarse
+  script(src='/js/main.js')

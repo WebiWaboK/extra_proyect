@@ -29,7 +29,7 @@ block content
     button(type='submit') Calcular IGC
   #result
     if error
-    p.error #{error}
+      p.error #{error}
 
   canvas#igcChart(width='600' height='200')
   script(src='https://cdn.jsdelivr.net/npm/chart.js')

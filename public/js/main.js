@@ -40,4 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
-  
+
+document.addEventListener('DOMContentLoaded', () => {
+  const errorMessage = document.querySelector('.error-message');
+  if (errorMessage) {
+    setTimeout(() => {
+      errorMessage.style.opacity = '0';
+      errorMessage.style.right = '-300px';
+    }, 5000);
+  }
+});

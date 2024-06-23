@@ -2,15 +2,15 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/css/style.css')
   body
     if user
       nav
         ul
           li: a(href='/') Home
           li: a(href='/igc') Calcular IGC
-          li: a(href='/logout') Logout
-          li: a(href='/info') Más Informacion
+          li: a(href='/info') Más Información
+          li: a(href='/logout') Cerrar Sesión
     else
       nav
         ul
