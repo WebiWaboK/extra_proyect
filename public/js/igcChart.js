@@ -1,8 +1,3 @@
-import Chart from 'chart.js/auto';
-import annotationPlugin from 'chartjs-plugin-annotation';
-
-Chart.register(annotationPlugin);
-
 document.addEventListener('DOMContentLoaded', () => {
   const igcForm = document.querySelector('form[action="/igc/calculate"]');
 
@@ -40,28 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <p>Recomendaciones: ${result.recommendations}</p>
         `;
 
-        // Crear gráfico
-        const ctx = document.getElementById('igcChart').getContext('2d');
-        new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ['Esencial para la vida', 'Atletas', 'Fitness', 'Aceptable', 'Obesidad'],
-            datasets: [{
-              label: 'IGC',
-              data: [6, 13, 17, 24, 30], // Ejemplo de datos
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
+        // Aquí puedes agregar el código para actualizar la gráfica con los resultados.
       } catch (error) {
         console.error('Error:', error);
       }

@@ -16,10 +16,9 @@ exports.calculateIGC = async (req, res) => {
         }
       });
     const { igc, category, recommendations } = response.data;
-    res.render('igcResults', { user: req.user, igc, category, recommendations });
+    res.json({ igc, category, recommendations });
   } catch (error) {
     console.error('Calculate Error:', error);
-    const errorMessage = error.response ? error.response.data.error : 'Error en el cálculo';
-    res.render('igc', { user: req.user, error: errorMessage });
+    res.status(500).json({ error: error.message });
   }
 };
