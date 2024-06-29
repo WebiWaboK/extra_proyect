@@ -4,16 +4,16 @@ block content
   .result-container
     h1 Resultados de IGC
     .result-details
-      p Tu IGC es 
-      span.result-value #{igc}%
-      p Estás en la categoría: 
-      span.result-category #{category}
+      p Tu IGC es
+      p.result-value #{igc}%
+      p Estás en la categoría:
+      p.result-category #{category}
       p Recomendaciones:
-      span.result-recommendations #{recommendations}
-      a.button(href='/igc') Calcular de nuevo
+      p.result-recommendations #{recommendations}
+    a.button(href='/igc') Calcular de nuevo
 
     .chart-container
-      canvas#igcChart(width='1200' height='600') // Ajusta el tamaño del canvas aquí
+      canvas#igcChart // Ajusta el tamaño del canvas aquí
 
   script(src='https://cdn.jsdelivr.net/npm/chart.js')
   script(src='https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation')
@@ -53,7 +53,7 @@ block content
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         scales: {
           x: {
             type: 'linear',
