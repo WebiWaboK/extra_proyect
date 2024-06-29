@@ -1,14 +1,23 @@
-import Chart from 'chart.js/auto';
-import annotationPlugin from 'chartjs-plugin-annotation';
+extends layout
 
-Chart.register(annotationPlugin);
+block content
+  .result-container
+    h1 Resultados de IGC
+    .result-details
+      p Tu IGC es 
+      span.result-value #{igc}%
+      p Estás en la categoría: 
+      span.result-category #{category}
+      p Recomendaciones:
+      span.result-recommendations #{recommendations}
+      a.button(href='/igc') Calcular de nuevo
 
-document.addEventListener('DOMContentLoaded', () => {
-  const resultDiv = document.getElementById('result');
+    .chart-container
+      canvas#igcChart(width='1200' height='600') // Ajusta el tamaño del canvas aquí
 
-  if (resultDiv) {
-    const { igc } = resultDiv.dataset;
-
+  script(src='https://cdn.jsdelivr.net/npm/chart.js')
+  script(src='https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation')
+  script.
     const ctx = document.getElementById('igcChart').getContext('2d');
     new Chart(ctx, {
       type: 'scatter',
@@ -32,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           {
             label: 'Tu IGC',
-            data: [{ x: parseFloat(igc), y: 0 }],
+            data: [{ x: #{igc}, y: 0 }],
             backgroundColor: 'rgba(255, 99, 132, 1)',
             borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1,
@@ -44,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             type: 'linear',
@@ -165,5 +174,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-  }
-});
