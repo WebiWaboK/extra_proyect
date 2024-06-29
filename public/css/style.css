@@ -106,6 +106,10 @@ input, select, button {
   width: calc(100% - 20px);
 }
 
+select {
+  width: calc(100% - 20px);
+}
+
 button {
   background-color: #4CAF50;
   color: white;

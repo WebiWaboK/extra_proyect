@@ -7,13 +7,14 @@ html
     if user
       nav
         ul
-          li: a(href='/') Inicio
+          li: a(href='/') Calcular IMC
           li: a(href='/igc') Calcular IGC
           li: a(href='/info') Más Información
           li: a(href='/logout') Cerrar Sesión
     else
       nav
         ul
+          li: a(href='/') Calcular IMC
           li: a(href='/login') Iniciar Sesión
           li: a(href='/register') Registrarse
     block content
