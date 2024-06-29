@@ -9,24 +9,23 @@ const verifyToken = (token) => {
   return jwt.verify(token, secret);
 };
 
-module.exports = (req, res, next) => {
+const protect = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
     try {
       const decoded = verifyToken(token);
       req.user = decoded;
       res.locals.user = req.user;
+      next();
     } catch (error) {
       res.clearCookie('jwt');
-      req.user = null;
-      res.locals.user = null;
+      res.redirect('/login');
     }
   } else {
-    req.user = null;
-    res.locals.user = null;
+    res.redirect('/login');
   }
-  next();
 };
 
+module.exports = protect;
 module.exports.generateToken = generateToken;
 module.exports.verifyToken = verifyToken;

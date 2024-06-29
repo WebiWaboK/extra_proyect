@@ -10,11 +10,17 @@ block content
     input(type='number' name='height' required)
     br
     button(type='submit') Calcular IMC
+    
+  if !user
+    #info-message.info-message(style="display:none;")
+      | Si quieres saber tu Índice de Grasa Corporal o más información adicional del IMC, 
+      a(href='/register').info-link regístrate 
+      | o 
+      a(href='/login').info-link inicia sesión 
+      | si ya tienes cuenta.
+  
   #result
 
-  if !user
-    #info-message(style="display:none;") Si quieres saber tu Índice de Grasa Corporal o  mas informacion adicional del IMC, <a href='/register'>regístrate</a> o <a href='/login'>inicia sesión</a> si ya tienes cuenta.
-    
   canvas#bmiChart(width='600' height='200') // Ajusta el tamaño del canvas aquí
 
   script(src='https://cdn.jsdelivr.net/npm/chart.js')
