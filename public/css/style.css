@@ -257,13 +257,13 @@ ul li {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 1000px;
   margin-top: 30px;
 }
 
 .chart-container {
   width: 100%;
   height: 500px;
+  align-items: center;
 }
 
 .info-message {
