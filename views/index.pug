@@ -1,27 +1,29 @@
 extends layout
 
 block content
-  h1 Calculadora de IMC
-  form(id='bmiForm')
-    label(for='weight') Peso (kg):
-    input(type='number' name='weight' required)
-    br
-    label(for='height') Altura (cm):
-    input(type='number' name='height' required)
-    br
-    button(type='submit') Calcular IMC
-  #result
+  .content-container
+    h1 Calculadora de IMC
+    form(id='bmiForm')
+      label(for='weight') Peso (kg):
+      input(type='number' name='weight' required)
+      br
+      label(for='height') Altura (cm):
+      input(type='number' name='height' required)
+      br
+      button(type='submit') Calcular IMC
+    #result
 
-  if !user
-    #info-message.info-message(style="display:none;")
-      | Si quieres saber tu Índice de Grasa Corporal o más información adicional del IMC, 
-      a(href='/register').info-link regístrate 
-      | o 
-      a(href='/login').info-link inicia sesión 
-      | si ya tienes cuenta.
+    if !user
+      #info-message.info-message(style="display:none;")
+        | Si quieres saber tu Índice de Grasa Corporal o más información adicional del IMC, 
+        a(href='/register').info-link regístrate 
+        | o 
+        a(href='/login').info-link inicia sesión 
+        | si ya tienes cuenta.
 
-  .chart-container(style="width: 100%; height: 600px; display: none;")
-    #bmiChart(style="width: 100%; height: 100%;")
+    .chart-wrapper
+      .chart-container(style="display: none;")
+        #bmiChart
 
   script(src='https://cdn.plot.ly/plotly-latest.min.js')
   script.
@@ -114,7 +116,7 @@ block content
         ]
       };
 
-      Plotly.newPlot('bmiChart', data, layout);
+      Plotly.newPlot('bmiChart', data, layout, {responsive: true});
     }
     
     document.getElementById('bmiForm').addEventListener('submit', async function(event) {
@@ -130,9 +132,11 @@ block content
         });
         const result = await response.json();
         document.querySelector('#result').innerHTML = `
-            <p>Tu IMC es ${result.bmi}</p>
-            <p>Estás en la categoría: ${result.category}</p>
-            <p>Recomendaciones: ${result.recommendations}</p>
+            <div class="result-container">
+              <p class="result-value">Tu IMC es ${result.bmi}</p>
+              <p class="result-category">Estás en la categoría: ${result.category}</p>
+              <p class="result-recommendations">Recomendaciones: ${result.recommendations}</p>
+            </div>
         `;
         document.querySelector('.chart-container').style.display = 'block';
         drawChart(result.bmi);

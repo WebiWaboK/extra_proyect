@@ -12,165 +12,114 @@ block content
       p.result-recommendations #{recommendations}
     a.button(href='/igc') Calcular de nuevo
 
-    .chart-container
-      canvas#igcChart // Ajusta el tamaño del canvas aquí
+    .chart-wrapper
+      .chart-container
+        #igcChart(style="width: 100%; height: 500px;")
 
-  script(src='https://cdn.jsdelivr.net/npm/chart.js')
-  script(src='https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation')
+  script(src='https://cdn.plot.ly/plotly-latest.min.js')
   script.
-    const ctx = document.getElementById('igcChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'scatter',
-      data: {
-        datasets: [
-          {
-            label: 'Rango de IGC',
-            data: [
-              { x: 6, y: 0 },
-              { x: 13, y: 0 },
-              { x: 17, y: 0 },
-              { x: 24, y: 0 },
-              { x: 30, y: 0 }
-            ],
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            borderColor: 'rgba(0, 0, 0, 1)',
-            borderWidth: 1,
-            showLine: true,
-            pointRadius: 0,
-            fill: false
-          },
-          {
-            label: 'Tu IGC',
-            data: [{ x: #{igc}, y: 0 }],
-            backgroundColor: 'rgba(255, 99, 132, 1)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1,
-            pointRadius: 10,
-            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-            fill: false
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        scales: {
-          x: {
-            type: 'linear',
-            position: 'bottom',
-            title: {
-              display: true,
-              text: 'IGC'
-            },
-            min: 0,
-            max: 40,
-            grid: {
-              display: false
-            },
-            ticks: {
-              callback: function(value) {
-                if (value === 6) return 'Esencial para la vida';
-                if (value === 13) return 'Atletas';
-                if (value === 17) return 'Fitness';
-                if (value === 24) return 'Aceptable';
-                if (value === 30) return 'Obesidad';
-                return '';
-              }
-            }
-          },
-          y: {
-            display: false
+    function drawChart(igcValue) {
+      var data = [
+        {
+          x: [6, 13, 17, 24, 30],
+          y: [1, 1, 1, 1, 1],
+          mode: 'lines+markers',
+          name: 'Categorías de IGC',
+          line: {
+            color: 'black'
           }
         },
-        plugins: {
-          annotation: {
-            annotations: {
-              line1: {
-                type: 'line',
-                xMin: 6,
-                xMax: 30,
-                yMin: 0,
-                yMax: 0,
-                borderColor: 'black',
-                borderWidth: 2
-              },
-              point1: {
-                type: 'line',
-                xMin: 6,
-                xMax: 6,
-                yMin: -1,
-                yMax: 1,
-                borderColor: 'black',
-                borderWidth: 2,
-                label: {
-                  content: 'Esencial para la vida',
-                  enabled: true,
-                  position: 'end',
-                  yAdjust: 10 // Ajusta la posición vertical de la etiqueta
-                }
-              },
-              point2: {
-                type: 'line',
-                xMin: 13,
-                xMax: 13,
-                yMin: -1,
-                yMax: 1,
-                borderColor: 'black',
-                borderWidth: 2,
-                label: {
-                  content: 'Atletas',
-                  enabled: true,
-                  position: 'end',
-                  yAdjust: 10 // Ajusta la posición vertical de la etiqueta
-                }
-              },
-              point3: {
-                type: 'line',
-                xMin: 17,
-                xMax: 17,
-                yMin: -1,
-                yMax: 1,
-                borderColor: 'black',
-                borderWidth: 2,
-                label: {
-                  content: 'Fitness',
-                  enabled: true,
-                  position: 'end',
-                  yAdjust: 10 // Ajusta la posición vertical de la etiqueta
-                }
-              },
-              point4: {
-                type: 'line',
-                xMin: 24,
-                xMax: 24,
-                yMin: -1,
-                yMax: 1,
-                borderColor: 'black',
-                borderWidth: 2,
-                label: {
-                  content: 'Aceptable',
-                  enabled: true,
-                  position: 'end',
-                  yAdjust: 10 // Ajusta la posición vertical de la etiqueta
-                }
-              },
-              point5: {
-                type: 'line',
-                xMin: 30,
-                xMax: 30,
-                yMin: -1,
-                yMax: 1,
-                borderColor: 'black',
-                borderWidth: 2,
-                label: {
-                  content: 'Obesidad',
-                  enabled: true,
-                  position: 'end',
-                  yAdjust: 10 // Ajusta la posición vertical de la etiqueta
-                }
-              }
-            }
+        {
+          x: [igcValue],
+          y: [1],
+          mode: 'markers',
+          name: 'Tu IGC',
+          marker: {
+            color: 'green',
+            size: 20
           }
         }
-      }
-    });
+      ];
+
+      var layout = {
+        title: 'Categorías de IGC',
+        xaxis: {
+          title: 'IGC',
+          range: [0, 40],
+          tickvals: [6, 13, 17, 24, 30],
+          ticktext: ['Esencial para la vida', 'Atletas', 'Fitness', 'Aceptable', 'Obesidad'],
+          showgrid: false
+        },
+        yaxis: {
+          showgrid: false,
+          zeroline: false,
+          showticklabels: false
+        },
+        shapes: [
+          {
+            type: 'line',
+            x0: 6,
+            x1: 6,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          },
+          {
+            type: 'line',
+            x0: 13,
+            x1: 13,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          },
+          {
+            type: 'line',
+            x0: 17,
+            x1: 17,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          },
+          {
+            type: 'line',
+            x0: 24,
+            x1: 24,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          },
+          {
+            type: 'line',
+            x0: 30,
+            x1: 30,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          }
+        ]
+      };
+
+      Plotly.newPlot('igcChart', data, layout, {responsive: true});
+    }
+
+    drawChart(#{igc});
