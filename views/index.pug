@@ -10,7 +10,8 @@ block content
     input(type='number' name='height' required)
     br
     button(type='submit') Calcular IMC
-    
+  #result
+
   if !user
     #info-message.info-message(style="display:none;")
       | Si quieres saber tu Índice de Grasa Corporal o más información adicional del IMC, 
@@ -18,11 +19,121 @@ block content
       | o 
       a(href='/login').info-link inicia sesión 
       | si ya tienes cuenta.
-  
-  #result
 
-  canvas#bmiChart(width='600' height='200') // Ajusta el tamaño del canvas aquí
+  .chart-container(style="width: 100%; height: 600px; display: none;")
+    #bmiChart(style="width: 100%; height: 100%;")
 
-  script(src='https://cdn.jsdelivr.net/npm/chart.js')
-  script(src='https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation')
-  script(src='/js/chart.js')
+  script(src='https://cdn.plot.ly/plotly-latest.min.js')
+  script.
+    function drawChart(imcValue) {
+      var data = [
+        {
+          x: [18.5, 25, 30, 40],
+          y: [1, 1, 1, 1],
+          mode: 'lines+markers',
+          name: 'Categorías de IMC',
+          line: {
+            color: 'black'
+          }
+        },
+        {
+          x: [imcValue],
+          y: [1],
+          mode: 'markers',
+          name: 'Tu IMC',
+          marker: {
+            color: 'green',
+            size: 20
+          }
+        }
+      ];
+
+      var layout = {
+        title: 'Categorías de IMC',
+        xaxis: {
+          title: 'IMC',
+          range: [18.5, 40],
+          tickvals: [18.5, 25, 30, 40],
+          ticktext: ['Bajo peso', 'Peso normal', 'Sobrepeso', 'Obesidad'],
+          showgrid: false
+        },
+        yaxis: {
+          showgrid: false,
+          zeroline: false,
+          showticklabels: false
+        },
+        shapes: [
+          {
+            type: 'line',
+            x0: 18.5,
+            x1: 18.5,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          },
+          {
+            type: 'line',
+            x0: 25,
+            x1: 25,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          },
+          {
+            type: 'line',
+            x0: 30,
+            x1: 30,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          },
+          {
+            type: 'line',
+            x0: 40,
+            x1: 40,
+            y0: 0,
+            y1: 2,
+            line: {
+              color: 'black',
+              width: 1,
+              dash: 'dot'
+            }
+          }
+        ]
+      };
+
+      Plotly.newPlot('bmiChart', data, layout);
+    }
+    
+    document.getElementById('bmiForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const weight = document.querySelector('input[name="weight"]').value;
+        const height = document.querySelector('input[name="height"]').value;
+        const response = await fetch('/calculate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ weight, height })
+        });
+        const result = await response.json();
+        document.querySelector('#result').innerHTML = `
+            <p>Tu IMC es ${result.bmi}</p>
+            <p>Estás en la categoría: ${result.category}</p>
+            <p>Recomendaciones: ${result.recommendations}</p>
+        `;
+        document.querySelector('.chart-container').style.display = 'block';
+        drawChart(result.bmi);
+    });
