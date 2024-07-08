@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  .content-container
-    h1 Calculadora de IMC
+  h1 Calculadora de IMC
+  .form-container
     form(id='bmiForm')
       label(for='weight') Peso (kg):
       input(type='number' name='weight' required)
@@ -13,17 +13,17 @@ block content
       button(type='submit') Calcular IMC
     #result
 
-    if !user
-      #info-message.info-message(style="display:none;")
-        | Si quieres saber tu Índice de Grasa Corporal o más información adicional del IMC, 
-        a(href='/register').info-link regístrate 
-        | o 
-        a(href='/login').info-link inicia sesión 
-        | si ya tienes cuenta.
+  if !user
+    #info-message.info-message(style="display:none;")
+      | Si quieres saber tu Índice de Grasa Corporal o más información adicional del IMC, 
+      a(href='/register').info-link regístrate 
+      | o 
+      a(href='/login').info-link inicia sesión 
+      | si ya tienes cuenta.
 
-    .chart-wrapper
-      .chart-container(style="display: none;")
-        #bmiChart
+  .chart-wrapper
+    .chart-container(style="display: none;")
+      #bmiChart
 
   script(src='https://cdn.plot.ly/plotly-latest.min.js')
   script.

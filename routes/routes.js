@@ -4,6 +4,7 @@ const bmiController = require('../controllers/bmiController');
 const authController = require('../controllers/authController');
 const igcController = require('../controllers/igcController');
 const protect = require('../middlewares/protect');
+const dataController = require('../controllers/dataController');
 const infoController = require('../controllers/infoController');
 
 router.get('/', protect, bmiController.index);
@@ -19,5 +20,7 @@ router.get('/igc', protect, igcController.igcForm);
 router.post('/igc/calculate', protect, igcController.calculateIGC);
 
 router.get('/info', protect, infoController.info);
+
+router.get('/datos', protect, dataController.getData);
 
 module.exports = router;

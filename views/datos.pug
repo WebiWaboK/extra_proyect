@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  .content-container
+    h1 Datos de IMC y IGC
+
+    .data-section
+      h2 Tus Datos de IMC
+      if bmiData.length > 0
+        each bmi in bmiData
+          .data-card
+            p
+              strong Fecha:
+              | #{new Date(bmi.created_at).toLocaleString()}
+            p
+              strong Peso:
+              | #{bmi.weight} kg
+            p
+              strong Altura:
+              | #{bmi.height} cm
+            p
+              strong IMC:
+              | #{bmi.bmi}
+            p
+              strong Categoría:
+              | #{bmi.category}
+            p
+              strong Recomendaciones:
+              | #{bmi.recommendations}
+      else
+        p No hay datos de IMC disponibles.
+
+    .data-section
+      h2 Tus Datos de IGC
+      if igcData.length > 0
+        each igc in igcData
+          .data-card
+            p
+              strong Fecha:
+              | #{new Date(igc.created_at).toLocaleString()}
+            p
+              strong IGC:
+              | #{igc.igc}
+            p
+              strong Categoría:
+              | #{igc.category}
+            p
+              strong Recomendaciones:
+              | #{igc.recommendations}
+      else
+        p No hay datos de IGC disponibles.
