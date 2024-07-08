@@ -123,6 +123,7 @@ block content
         event.preventDefault();
         const weight = document.querySelector('input[name="weight"]').value;
         const height = document.querySelector('input[name="height"]').value;
+        console.log('Datos enviados desde el formulario:', { weight, height }); // Log para verificar los datos enviados
         const response = await fetch('/calculate', {
             method: 'POST',
             headers: {
@@ -131,6 +132,7 @@ block content
             body: JSON.stringify({ weight, height })
         });
         const result = await response.json();
+        console.log('Respuesta recibida desde el servidor:', result); // Log para verificar la respuesta
         document.querySelector('#result').innerHTML = `
             <div class="result-container">
               <p class="result-value">Tu IMC es ${result.bmi}</p>

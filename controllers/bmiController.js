@@ -6,14 +6,23 @@ exports.index = (req, res) => {
 
 exports.calculate = async (req, res) => {
   const { weight, height } = req.body;
-  console.log('Calculate Request:', req.body); // Log de la solicitud de cálculo
+  const token = req.cookies.jwt;
+
   try {
-    const response = await axios.post('http://localhost:4000/api/bmi/calculate', { weight, height });
+    console.log('Solicitud de cálculo de BMI desde web:', req.body); // Verificar datos enviados
+    console.log('Token enviado a la API:', token); // Verificar el token enviado
+    const response = await axios.post('http://localhost:4000/api/bmi/calculate', 
+      { weight, height }, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
     const result = response.data;
-    console.log('Calculate Response:', result); // Log de la respuesta de cálculo
+    console.log('Respuesta del cálculo de BMI desde la API:', result); // Verificar la respuesta de la API
     res.json(result);
   } catch (error) {
-    console.error('Calculate Error:', error.response ? error.response.data : error.message); // Log del error
+    console.error('Error al calcular el BMI desde web:', error.response ? error.response.data : error.message);
     res.status(500).json({ error: error.response ? error.response.data.error : error.message });
   }
 };
