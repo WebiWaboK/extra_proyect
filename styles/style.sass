@@ -19,14 +19,22 @@ nav
     padding: 0
     display: flex
     justify-content: center
+    flex-wrap: wrap
 
     li
-      margin: 0 15px
+      margin: 0 5px
 
       a
         color: white
         text-decoration: none
-        font-size: 1.2rem
+        font-size: 1rem
+        padding: 5px 10px
+        background-color: #4CAF50
+        border-radius: 4px
+        transition: background-color 0.3s
+
+        &:hover
+          background-color: #45a049
 
 .content-container
   flex: 1
@@ -36,6 +44,15 @@ nav
   border-radius: 8px
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
   max-width: 800px
+  text-align: center
+
+.form-container
+  margin: 20px auto
+  background-color: white
+  border-radius: 8px
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  padding: 20px
+  max-width: 400px
 
 .data-section
   margin-bottom: 20px
@@ -71,12 +88,6 @@ strong
   color: #333
 
 form
-  max-width: 600px
-  margin: 0 auto
-  padding: 20px
-  background-color: #ffffff
-  border-radius: 8px
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
   display: flex
   flex-direction: column
   align-items: center
@@ -210,8 +221,27 @@ ul
     text-decoration: none
     color: #245269
 
-// Estilos para pantallas más pequeñas
+.info-section
+  background-color: #ffffff
+  padding: 20px
+  border-radius: 8px
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  margin-bottom: 20px
+
+.info-section h2
+  color: #4CAF50
+
+.info-section p
+  margin: 10px 0
+
 @media (max-width: 768px)
+  nav ul
+    justify-content: space-around
+
+    li
+      flex: 1 1 auto
+      text-align: center
+
   .info-block
     flex: 1 1 100%
 
