@@ -8,14 +8,20 @@ html
     if user
       nav
         ul
-          li: a(href='/') Calcular IMC
-          li: a(href='/igc') Calcular IGC
-          li: a(href='/info') Más Información
-          li: a(href='/datos') Mis Datos
+          if currentUrl !== '/'
+            li: a(href='/') Calcular IMC
+          if currentUrl !== '/igc'
+            li: a(href='/igc') Calcular IGC
+          if currentUrl !== '/info'
+            li: a(href='/info') Más Información
+          if currentUrl !== '/datos'
+            li: a(href='/datos') Mis Datos
           li: a(href='/logout') Cerrar Sesión
     else
       nav
         ul
-          li: a(href='/login') Iniciar Sesión
-          li: a(href='/register') Registrarse
+          if currentUrl !== '/login'
+            li: a(href='/login') Iniciar Sesión
+          if currentUrl !== '/register'
+            li: a(href='/register') Registrarse
     block content
