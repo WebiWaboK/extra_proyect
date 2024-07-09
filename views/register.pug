@@ -1,22 +1,23 @@
 extends layout
 
 block content
-  h1 Registro
-  if error
-    .error-message #{error}
+  .form-container
+    h1 Registro
+    if error
+      .error-message #{error}
 
-  form(action='/register' method='post')
-    label(for='username') Nombre de usuario:
-    input(type='text' name='username' required)
-    br
-    label(for='email') Correo electrónico:
-    input(type='email' name='email' required)
-    br
-    label(for='password') Contraseña:
-    input(type='password' name='password' required)
-    br
-    label(for='confirmPassword') Confirmar contraseña:
-    input(type='password' name='confirmPassword' required)
-    br
-    button(type='submit') Registrarse
+    form(action='/register' method='post')
+      label(for='username') Nombre de usuario:
+      input(type='text' name='username' required)
+      br
+      label(for='email') Correo electrónico:
+      input(type='email' name='email' required)
+      br
+      label(for='password') Contraseña:
+      input(type='password' name='password' required)
+      br
+      label(for='confirmPassword') Confirmar contraseña:
+      input(type='password' name='confirmPassword' required)
+      br
+      button(type='submit') Registrarse
   script(src='/js/main.js')

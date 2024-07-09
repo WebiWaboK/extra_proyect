@@ -142,4 +142,8 @@ block content
         `;
         document.querySelector('.chart-container').style.display = 'block';
         drawChart(result.bmi);
+        
+        // Borrar campos del formulario
+        document.querySelector('input[name="weight"]').value = '';
+        document.querySelector('input[name="height"]').value = '';
     });
